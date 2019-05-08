@@ -1,41 +1,39 @@
 # SafetyAPI-Javascript
 API de integração via Javascript para seu formulário
 
-<h2>Instalação</h2>
+##Instalação
 
-<p>Para iniciar a integração serão necessárias as chaves de acesso, que podem se obtidas a partir do painel administrativo da SafetyMails, acessando o menu <b>Validação de Formulários</b></p>
+Para iniciar a integração serão necessárias as chaves de acesso, que podem se obtidas a partir do painel administrativo da SafetyMails, acessando o menu **Validação de Formulários**
 
-<p>Crie uma nova <b>Origem</b> para que as suas chaves de acesso sejam geradas</p>
+Crie uma nova **Origem** para que as suas chaves de acesso sejam geradas
 
-<p>Assim que a origem for criada terá acesso a sua <b>API_KEY</b> e <b>TICKET_ORIGEM</b></p>
+Assim que a origem for criada terá acesso a sua **API_KEY** e **TICKET_ORIGEM**
 
-<h3>Sintaxe da Consulta</h3>
+###Sintaxe da Consulta
 
-<p>https://optin.safetymails.com/main/safetyOptin/<<b>API_KEY</b>>/<<b>TICKET_ORIGEM</b>>/<<b>EMAIL_CODIFICADO</b>></p>
+https://optin.safetymails.com/main/safetyOptin/<**API_KEY**>/<**TICKET_ORIGEM**>/<**EMAIL_CODIFICADO**>
   
-<p><b>&lt;EMAIL_CODIFICADO></b>: O e-mail deve ser codificado utilizando o protocolo “base64”, caso contrário o sistema não receberá com perfeição os dados.</p>
+> &lt;**EMAIL_CODIFICADO**>: O e-mail deve ser codificado utilizando o protocolo “base64”, caso contrário o sistema não receberá com perfeição os dados.
 
-<h3>Sandbox</h3>
+###Sandbox
 
-<p>A integração oferece um ambiente de Sandbox para que possam ser feitos testes sem consumir seus créditos de uma consulta real.</p>
+A integração oferece um ambiente de Sandbox para que possam ser feitos testes sem consumir seus créditos de uma consulta real.
 
-<p>Para utilizar a Sandbox basta mudar o comando da Sintaxe da URL de consulta como no exemplo abaixo:</p>
+Para utilizar a Sandbox basta mudar o comando da Sintaxe da URL de consulta como no exemplo abaixo:
 
-<p>http://optin.safetymails.com/main/sandbox/<<b>API_KEY</b>>/<<b>TICKET_ORIGEM</b>>/<<b>EMAIL_CODIFICADO</b>></p>
+http://optin.safetymails.com/main/sandbox/<**API_KEY**>/<**TICKET_ORIGEM**>/<**EMAIL_CODIFICADO**>
 
-<p>O Sandbox apenas verifica se todos os retornos de status possíveis estão chegando corretamente em sua integração. Não são feitas validações reais.</p>
+O Sandbox apenas verifica se todos os retornos de status possíveis estão chegando corretamente em sua integração. Não são feitas validações reais.
 
-<h2>Retorno</h2>
+##Retorno
 
-<div class="highlight highlight-source-js">
-    <pre>
-	Object {
-	  IP/Dia:"192.168.2.2"
-	  StatusCal:"OK"
-	  StatusEmail:"INVALIDO"
-	  email:"teste-safetyoptin@safetymails.com"
-	  public:false
-	  referer:"https://www.safetymails.com"
-	}
-    </pre>
-</div>
+```javascript
+		Object {
+	  		IP/Dia:"192.168.2.2"
+	  		StatusCal:"OK"
+	  		StatusEmail:"INVALIDO"
+	  		email:"teste-safetyoptin@safetymails.com"
+	  		public:false
+	  		referer:"https://www.safetymails.com"
+		}
+```
