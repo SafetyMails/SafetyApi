@@ -83,7 +83,7 @@ Um IP diferente do cadastrado para consultas pelo comando 'SafetyCheck'
 **Excedido o limite de consultas do IP %s (%s)<>(%s)**
 Para consultas com comando 'SafetyOptin' via JavaScript há um limite de tentativas/dia pelo mesmo IP de usuário, padrão: 20
 
-### Http Erros
+### HTTP Erros
 
 `HTTP CODE 422` Referer ou ApiKey Inválidos
 
