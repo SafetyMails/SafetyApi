@@ -30,11 +30,17 @@ O Sandbox apenas verifica se todos os retornos de status possíveis estão chega
 O retorno da consulta é no formato JSON, e informará caso a consulta retorne algum tipo de erro.
 
 **IP/Dia**: Informa o IP origem da consulta.
+
 **StatusCal**: Status da chamada: OK ou Failed.
+
 **StatusEmail**: Resultado da validação do e-mail, em caso de sucesso.
+
 **email**: E-mail consultado.
+
 **public**: Informa se o e-mail consultado é de domínio público ou privado.
+
 **referer**: Informa a origem da consulta em caso de chamada via javascript.
+
 **MsgErro**: Retorna a mensagem de erro referente a falha na chamada.
 
 **Retorno de Sucesso**
