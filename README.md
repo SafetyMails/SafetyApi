@@ -13,4 +13,4 @@ API de integração via Javascript para seu formulário
 
 <p>https://optin.safetymails.com/main/safetyOptin/<<b>API_KEY</b>>/<<b>TICKET_ORIGEM</b>>/<<b>EMAIL_CODIFICADO</b>></p>
   
-<p><b><EMAIL_CODIFICADO></b>: O e-mail deve ser codificado utilizando o protocolo “base64”, caso contrário o sistema não receberá com perfeição os dados.</p>
+<p><b>&lt;EMAIL_CODIFICADO></b>: O e-mail deve ser codificado utilizando o protocolo “base64”, caso contrário o sistema não receberá com perfeição os dados.</p>
