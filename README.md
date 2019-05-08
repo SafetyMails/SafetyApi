@@ -37,11 +37,23 @@ O retorno da consulta é no formato JSON, e informará caso a consulta retorne a
 **referer**: Informa a origem da consulta em caso de chamada via javascript.
 **MsgErro**: Retorna a mensagem de erro referente a falha na chamada.
 
+**Retorno de Sucesso**
 ```javascript
 Object {
 	IP/Dia:"192.168.2.2"
 	StatusCal:"OK"
 	StatusEmail:"INVALIDO"
+	email:"teste-safetyoptin@safetymails.com"
+	public:false
+	referer:"https://www.safetymails.com"
+}
+```
+**Retorno de Erro**
+```javascript
+Object {
+	IP/Dia:"192.168.2.2"
+	StatusCal: "Failed",
+	MsgErro : "Mensagem de erro"
 	email:"teste-safetyoptin@safetymails.com"
 	public:false
 	referer:"https://www.safetymails.com"
