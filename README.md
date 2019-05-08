@@ -28,12 +28,12 @@ API de integração via Javascript para seu formulário
 <h2>Retorno</h2>
 
 <code>
-Object {
-	IP/Dia:"192.168.2.2"
-	StatusCal:"OK"
-	StatusEmail:"INVALIDO"
-	email:"teste-safetyoptin@safetymails.com"
-	public:false
-	referer:"https://www.safetymails.com"
-}
+Object {\n
+	\tIP/Dia:"192.168.2.2"\n
+	\tStatusCal:"OK"\n
+	\tStatusEmail:"INVALIDO"\n
+	\temail:"teste-safetyoptin@safetymails.com"\n
+	\tpublic:false\n
+	\treferer:"https://www.safetymails.com"\n
+}\n
 </code>
