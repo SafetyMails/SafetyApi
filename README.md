@@ -27,7 +27,7 @@ API de integração via Javascript para seu formulário
 
 <h2>Retorno</h2>
 
-<div class="highlight highlight-text-html-php">
+<div class="highlight highlight-source-js">
     <pre>
 	Object {
 	  IP/Dia:"192.168.2.2"
