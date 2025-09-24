@@ -29,8 +29,8 @@ public class SafetyApi {
     }
     
     public static String safetyApi(String email) {
-        String apiKey = "<APIKEY INFORMADA NO PAINEL SAFETYMAILS>";
-        String tkOrigem = "<TK ORIGEM INFORMADA NO PAINEL SAFETYMAILS>";
+        String apiKey = "<APIKEY INFORMED IN THE SAFETYMAILS PANEL>";
+        String tkOrigem = "<TK ORIGEM INFORMED IN THE SAFETYMAILS PANEL>";
         int timeout = 10000; // Timeout em milissegundos
     
         try {
