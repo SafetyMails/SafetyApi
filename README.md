@@ -97,7 +97,7 @@ Object {
 ### Mensagens de Erro
 
 | HTTP Code | Erro | Descrição |
-| ----------- | ----------- |
+| ----------- | ----------- | ----------- |
 | 400 | Parâmetros inválidos | Chaves de acesso incorretas ou não existentes. |
 | 401 | API Key inválida | Chaves de acesso incorretas ou não existentes. |
 | 402 | Ticket Origem inválido ou inativo | Você está tentando realizar consultas para uma origem API inativa. Vá ao seu painel e ative a origem corretamente. |
