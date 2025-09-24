@@ -10,70 +10,68 @@
 
 // This function is just an example, if you prefer you can use your own javascript library
 async function sha1(text) {
-const encoder = new TextEncoder();
-const data = encoder.encode(text);
-const hashBuffer = await crypto.subtle.digest("SHA-1", data);
-return [...new Uint8Array(hashBuffer)]
-.map(byte => byte.toString(16).padStart(2, "0"))
-.join("");
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text);
+    const hashBuffer = await crypto.subtle.digest("SHA-1", data);
+    return [...new Uint8Array(hashBuffer)]
+    .map(byte => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 // This function is just an example, if you prefer you can use your own library javascript
 async function hmacSHA256(value, key) {
-const encoder = new TextEncoder();
-const keyData = encoder.encode(key);
-const valueData = encoder.encode(value);
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(key);
+    const valueData = encoder.encode(value);
 
-const cryptoKey = await crypto.subtle.importKey(
-"raw", keyData, { name: "HMAC", hash: { name: "SHA-256" } }, false, ["sign"]
-);
-const signature = await crypto.subtle.sign("HMAC", cryptoKey, valueData);
-return [...new Uint8Array(signature)]
-.map(byte => byte.toString(16).padStart(2, "0"))
-.join("");
+    const cryptoKey = await crypto.subtle.importKey(
+    "raw", keyData, { name: "HMAC", hash: { name: "SHA-256" } }, false, ["sign"]
+    );
+    const signature = await crypto.subtle.sign("HMAC", cryptoKey, valueData);
+    return [...new Uint8Array(signature)]
+    .map(byte => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 document.querySelector("button").addEventListener("click", async function () {
-const emailInput = document.querySelector('[type="email"]');
-if (!emailInput || emailInput.value.length < 1)
-throw new Error("Invalid Email Input value");
+    const emailInput = document.querySelector('[type="email"]');
+    if (!emailInput || emailInput.value.length < 1)
+        throw new Error("Invalid Email Input value");
 
-// Enter the ticket_origin and api_key values generated on the SafetyMails platform below.
-const ticket = '<TK ORIGEM INFORMADA NO PAINEL SAFETYMAILS>';
-const api_key = '<APIKEY INFORMADA NO PAINEL SAFETYMAILS>';
-const code = await sha1(ticket);
+    // Enter the ticket_origin and api_key values generated on the SafetyMails platform below.
+    const ticket = '<TK ORIGEM INFORMED IN THE SAFETYMAILS PANEL>';
+    const api_key = '<APIKEY INFORMED IN THE SAFETYMAILS PANEL>';
+    const code = await sha1(ticket);
 
-const email = emailInput.value;
-const url = `https://${ticket}.safetymails.com/api/${code}`;
-const hmac = await hmacSHA256(email, api_key);
+    const email = emailInput.value;
+    const url = `https://${ticket}.safetymails.com/api/${code}`;
+    const hmac = await hmacSHA256(email, api_key);
 
-let form = new FormData();
-form.append('email',email);
+    let form = new FormData();
+    form.append('email',email);
 
-try {
-const response = await fetch(url, {
-method: "POST",
-headers: {
-"Sf-Hmac": hmac
-},
-body: form
-});
-
-if (!response.ok) {
-console.error(`HTTPCode ${response.status}`);
-return;
-}
-
-const data = await response.json();
-
-if (!data.Success) {
-console.error("Response error", data);
-return;
-}
-
-console.log("Response success", data);
-} catch (error) {
-console.error("Request failed", error);
-}
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Sf-Hmac": hmac },
+            body: form
+        });
+        
+        if (!response.ok) {
+            console.error(`HTTPCode ${response.status}`);
+            return;
+        }
+        
+        const data = await response.json();
+        
+        if (!data.Success) {
+            console.error("Response error", data);
+            return;
+        }
+        
+        console.log("Response success", data);
+    } catch (error) {
+        console.error("Request failed", error);
+    }
 });
 </script>
 </body>
