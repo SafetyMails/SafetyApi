@@ -1,131 +1,139 @@
 # SafetyAPI
 
-API de integração para validação de email em tempo Real
+Integration API for real-time email validation
 
-## Instalação
+## Installation
 
-Para iniciar a integração serão necessárias as chaves de acesso, que podem se obtidas a partir do painel administrativo da SafetyMails, acessando o menu **Validação de Formulários**
+To start the integration, you will need access keys, which can be obtained from the SafetyMails admin panel by accessing the **Form Validation** menu.  
 
-Crie uma nova **Origem** para que as suas chaves de acesso sejam geradas
+Create a new **Source** so that your access keys are generated.  
 
-Assim que a origem for criada terá acesso a sua **API_KEY** e **TICKET_ORIGEM**
+Once the source is created, you will have access to your **API_KEY** and **TICKET_SOURCE**.  
 
-Veja mais em [nossa documentação](https://docs.safetymails.com/pt-br/article/como-customizar-a-api-real-time).
+See more in [our documentation](https://docs.safetymails.com/pt-br/article/como-customizar-a-api-real-time).
 
-### Sintaxe da Consulta
+### Query Syntax
 
-https://<**TICKET_ORIGEM**>.safetymails.com/api/<**CODE_TICKET**>
+```
+https://<TICKET_SOURCE>.safetymails.com/api/<CODE_TICKET>
+```
 
-Onde CODE_TICKET = SHA1(<TICKET_ORIGEM>).
-  
-Envie a requisição com o campo email no corpo do POST.
+Where CODE_TICKET = SHA1(<TICKET_SOURCE>).  
 
-### Autenticação via HMAC
+Send the request with the `email` field in the POST body.
 
-Para garantir a segurança das requisições, é necessário autenticar as chamadas da API usando HMAC (Código de Autenticação de Mensagem baseado em hash). Esse mecanismo assegura que os dados não foram adulterados durante o tráfego, desde que tanto o emissor quanto o receptor compartilhem uma chave secreta.
+### HMAC Authentication
 
-A função de hash utilizada deve seguir o padrão HMAC-SHA256, combinando dois elementos:
+To ensure request security, it is necessary to authenticate API calls using HMAC (Hash-based Message Authentication Code). This mechanism ensures that the data has not been tampered with during transmission, as long as both the sender and receiver share a secret key.  
 
-**VALOR**: o email que será verificado
+The hash function used must follow the HMAC-SHA256 standard, combining two elements:
 
-**CHAVE**: sua API Key fornecida pela plataforma
+- **VALUE**: the email to be verified  
+- **KEY**: your API Key provided by the platform  
 
-A fórmula de geração do hash é:
+The formula to generate the hash is:
 
-hash = HMAC_SHA256(VALOR, CHAVE);
+```
+hash = HMAC_SHA256(VALUE, KEY);
+```
 
-Este hash deverá ser enviado no Header da requisição:
+This hash must be sent in the request header:
 
-Sf-Hmac: (Conteúdo do Hash)
+```
+Sf-Hmac: (Hash Content)
+```
 
-**Exemplo**
+**Example:**
 
-**Sf-Hmac**: afc5382171c3745890b56********************4aa43506326b4e1fc993cb
+```
+Sf-Hmac: afc5382171c3745890b56********************4aa43506326b4e1fc993cb
+```
 
 ### Sandbox
 
-A integração oferece um ambiente de Sandbox para que possam ser feitos testes sem consumir seus créditos de uma consulta real.
+The integration provides a Sandbox environment so that tests can be performed without consuming credits from a real query.  
 
-Para utilizar a Sandbox basta ativar este recurso no cadastro de sua origem no painel da SafetyMails.
+To use Sandbox, simply activate this feature when registering your source in the SafetyMails panel.  
 
-O Sandbox apenas verifica se todos os retornos de status possíveis estão chegando corretamente em sua integração. Não são feitas validações reais, não são consumidos créditos enquanto esta opção estiver ativa em sua origem.
+The Sandbox only verifies whether all possible status returns are being properly received by your integration. No real validations are performed, and no credits are consumed while this option is active for your source.  
 
-## Retorno
+## Response
 
-O retorno da consulta é no formato JSON, e informará caso a consulta retorne algum tipo de erro.
+The query response is returned in JSON format and will indicate if any error occurred.  
 
-| Campo | Descrição |
+| Field | Description |
 | ----------- | ----------- |
-| Success | Retorno do tipo bool (true ou false). Indica se a requisição foi executada com sucesso. Se retornar false, significa que a consulta não foi realizada, podendo haver falhas como: chave de API incorreta, ticket inválido ou inativo, parâmetros malformados, limite de requisições excedido ou falta de créditos. |
-| DomainStatus | Status do domínio do e-mail consultado. |
-| Status | Resultado da validação do e-mail, em caso de sucesso. Os status podem ser: Válidos, Role-based, baixa entregabilidade, descartável, incertos, junk, inválidos, domínio inválido, erro de sintaxe e pendentes. |
-| Email | Email consultado. |
-| Limited | Informa se o e-mail consultado é de um provedor limitado, ou seja, que recebe um número limitado de solicitações. |
-| Public | Informa se o e-mail consultado é de domínio ‘Corporate’ (domínios privados e/ou que possuem regras privadas para recebimento) ou ‘Email provider’ (domínios que possuem regras públicas de recebimento). |
-| Advice | É uma classificação sugerida pela SafetyMails para o status do e-mail consultado (Valid, Invalid, Risky ou Unknown) para facilitar a análise. |
-| Balance | Quantidade de créditos para consulta disponíveis em sua conta. |
-| Msg | Retorna a mensagem de erro referente a falha na chamada (apenas quando a chamada apresenta erro). |
+| Success | Boolean (true or false). Indicates if the request was successfully executed. If false, it means the query was not performed due to issues like: incorrect API key, invalid or inactive ticket, malformed parameters, exceeded request limit, or lack of credits. |
+| DomainStatus | Status of the queried email’s domain. |
+| Status | Email validation result (if successful). Possible statuses: Valid, Role-based, Low deliverability, Disposable, Uncertain, Junk, Invalid, Invalid domain, Syntax error, and Pending. |
+| Email | Queried email. |
+| Limited | Indicates if the queried email belongs to a limited provider, i.e., one that only accepts a limited number of requests. |
+| Public | Indicates if the queried email belongs to a ‘Corporate’ domain (private domains and/or those with private receiving rules) or an ‘Email provider’ (domains with public receiving rules). |
+| Advice | A classification suggested by SafetyMails for the queried email status (Valid, Invalid, Risky, or Unknown) to simplify analysis. |
+| Balance | Number of available query credits in your account. |
+| Msg | Error message regarding a failed request (only when an error occurs). |
 
-**Retorno de Sucesso**
+**Success Response**
 ```javascript
 Object {
 	"Success":true,
 	"Email":"testeemail@safetymails.com",
 	"Referer":"www.safetymails.com",
-	"DomainStatus":"VALIDO",
-	"Status":"VALIDO",
+	"DomainStatus":"VALID",
+	"Status":"VALID",
 	"Advice":"Valid",
 	"Public":null,
 	"Limited":null,
 	"Balance":4112343
 }
 ```
-**Retorno de Erro**
+
+**Error Response**
 ```javascript
 Object {
 	"Success":false,
 	"Email":"testeemail@safetymails.com",
 	"Referer":"www.safetymails.com",
-	"Status":"PENDENTE",
+	"Status":"PENDING",
 	"Advice":"Unknown",
-	"Msg":"Referer inválido"
+	"Msg":"Invalid referer"
 }
 ```
 
-### Descrição de Status de E-mail
+### Email Status Descriptions
 
-**Válido** - Endereço de e-mail cuja existência foi confirmada
+**Valid** - Email address whose existence has been confirmed  
 
-**Inválido** - E-mail classificado como inexistente ou desativado em um domínio
+**Invalid** - Email classified as non-existent or deactivated within a domain  
 
-**Erro de Sintaxe** - E-mail que não atende às regras de sintaxe estipuladas pelos provedores de e-mails e RFCs de mercado
+**Syntax Error** - Email that does not meet syntax rules established by email providers and RFC standards  
 
-**Domínio Inválido** - O domínio não existe ou apresentou falhas diversas
+**Invalid Domain** - The domain does not exist or has multiple failures  
 
-**Scraped** - E-mails inseridos nesta categoria podem representar ameaças diversas, inclusive de bloqueios. Os provedores admitem que estes e-mails foram criados a partir de serviços de scrapers (daí seu nome), que são geradores automáticos de endereços "contato, adm, vendas, etc" para diversos domínios, caracterizando spam. Também podem ser e-mails de callcenters ou outros que não possuam um indivíduo responsável
+**Scraped** - Emails in this category may pose various risks, including blocks. Providers admit that these emails were created by scraper services (hence the name), which automatically generate addresses like "contact, admin, sales, etc." for multiple domains, characterizing spam. They may also belong to call centers or accounts without an individual responsible.  
 
-**Pendente** - E-mails dos quais ainda não possuímos informações em nosso banco de dados. Após um período de nova análise, específica para estes endereços, podemos ainda não possuir todas as informações. Estes e-mails têm seus créditos estornados para sua conta.
+**Pending** - Emails for which our database does not yet have information. After further analysis, these may still lack details. Credits for these queries are refunded to your account.  
 
-**Incerto** - Também são conhecidos como "Accept All" e "Deny All". Ou seja, recebem todas as mensagens ou negam todas as mensagens, independentemente de seu conteúdo. O resultado não pode ser confirmado.
+**Uncertain** - Also known as "Accept All" or "Deny All." They either accept all messages or reject all messages, regardless of content. Results cannot be confirmed.  
 
-**Descartável** - E-mails provenientes de serviços de endereços temporários. Eles são válidos, mas apenas por algum tempo (horas ou minutos). Após este período, tornam-se inválidos e prejudicam sua entregabilidade.
+**Disposable** - Emails from temporary address services. They are valid only for a short time (hours or minutes). After that, they become invalid and harm deliverability.  
 
-**Desconhecido** - E-mails cujos servidores são configurados para não fornecer quaisquer informações de seus usuários. Desta forma, não é possível obter confirmações que os identifiquem. Ocorre mais em e-mails corporativos.
+**Unknown** - Emails whose servers are configured not to provide any user information. Therefore, confirmations cannot be obtained. This occurs more often with corporate emails.  
 
-**Junk** - Estes são endereços de e-mail cuja sintaxa não os invalida, mas possuem elementos que serão identificados pelos provedores e direcionados para pasta junk, lixo eletrônico ou spam. E-mails com caracteres repetidos, palavrões, sequências numéricas e etc.
+**Junk** - Email addresses not invalid by syntax but containing elements that providers will identify as junk, spam, or direct to a junk/spam folder. Examples include repeated characters, offensive words, or numeric sequences.  
 
-**Limitado** - Endereços de e-mails que, sabidamente, possuem regras de filtragem de mensagens por volume e poderão causar problemas na entrega, como bloqueios.
+**Limited** - Email addresses known to enforce volume-based filtering rules that may cause delivery issues, such as blocks.  
 
-### Mensagens de Erro
+### Error Messages
 
-| HTTP Code | Erro | Descrição |
+| HTTP Code | Error | Description |
 | ----------- | ----------- | ----------- |
-| 400 | Parâmetros inválidos | Chaves de acesso incorretas ou não existentes. |
-| 401 | API Key inválida | Chaves de acesso incorretas ou não existentes. |
-| 402 | Ticket Origem inválido ou inativo | Você está tentando realizar consultas para uma origem API inativa. Vá ao seu painel e ative a origem corretamente. |
-| 403 | Origem diferente da cadastrada (%s)<>(%s) | Você está tentando realizar consultas para uma origem API diferente da cadastrada em sua conta. Verifique a origem e tente novamente |
-| 406 | Limite de consultas por hora ou minuto ou diário ultrapassado – Contacte o Suporte | A Safetymails oferece uma proteção ao seu formulário de uso indevido, permitindo que você limite as consultas vindas de um mesmo IP, além disso todos os planos possuem limites de consultas por hora e minuto, protegendo de erros que possam gerar loop. Para realizar mais consultas do que o previsto, entre em contato com o suporte (support@safetymails.com) |
-| 429 | Sem créditos para realizar a pesquisa | Sua conta não possui créditos para realizar a consulta. É preciso adquirir créditos. |
+| 400 | Invalid parameters | Incorrect or missing access keys. |
+| 401 | Invalid API Key | Incorrect or missing access keys. |
+| 402 | Invalid or inactive Source Ticket | You are trying to query an inactive API source. Go to your panel and activate the source correctly. |
+| 403 | Source different from the registered one (%s)<>(%s) | You are trying to query an API source different from the one registered in your account. Check the source and try again. |
+| 406 | Query limit per hour, minute, or day exceeded – Contact Support | Safetymails protects your form from misuse, allowing you to limit queries from the same IP. Additionally, all plans have hourly and per-minute query limits to prevent loops. To perform more queries than allowed, contact support (support@safetymails.com). |
+| 429 | No credits available | Your account has no credits left for queries. You need to purchase more credits. |
 
-Se precisar de mais orientações para configurar sua API, fale com nosso time de suporte:
+For further assistance in configuring your API, contact our support team:  
 📧 support@safetymails.com
