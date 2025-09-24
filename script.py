@@ -3,8 +3,8 @@ import hashlib
 import hmac
 
 def safety_api(email):
-    api_key = '<APIKEY INFORMADA NO PAINEL SAFETYMAILS>'
-    tk_origem = '<TK ORIGEM INFORMADA NO PAINEL SAFETYMAILS>'
+    api_key = '<APIKEY INFORMED IN THE SAFETYMAILS PANEL>'
+    tk_origem = '<TK_ORIGEM INFORMED IN THE SAFETYMAILS PANEL>'
     timeout = 10 # Timeout da conexão com a Safetymails
 
     url = "https://{tk_origem}.safetymails.com/api/{hashlib.sha1(tk_origem.encode()).hexdigest()}"
@@ -23,6 +23,6 @@ def safety_api(email):
 
 # Exemplo de uso
 if __name__ == "__main__":
-    email_teste = "teste@email.com"
-    resposta = safety_api(email_teste)
+    email_test = "test@email.com"
+    resposta = safety_api(email_test)
     print(resposta)
