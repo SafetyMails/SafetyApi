@@ -38,7 +38,7 @@ document.querySelector("button").addEventListener("click", async function () {
         throw new Error("Invalid Email Input value");
 
     // Enter the ticket_origin and api_key values generated on the SafetyMails platform below.
-    const ticket = '<TK ORIGEM INFORMED IN THE SAFETYMAILS PANEL>';
+    const ticket = '<SOURCE TICKET INFORMED IN THE SAFETYMAILS PANEL>';
     const api_key = '<APIKEY INFORMED IN THE SAFETYMAILS PANEL>';
     const code = await sha1(ticket);
 
