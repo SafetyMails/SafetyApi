@@ -20,6 +20,28 @@ Onde CODE_TICKET = SHA1(<TICKET_ORIGEM>).
   
 Envie a requisição com o campo email no corpo do POST.
 
+### Autenticação via HMAC
+
+Para garantir a segurança das requisições, é necessário autenticar as chamadas da API usando HMAC (Código de Autenticação de Mensagem baseado em hash). Esse mecanismo assegura que os dados não foram adulterados durante o tráfego, desde que tanto o emissor quanto o receptor compartilhem uma chave secreta.
+
+A função de hash utilizada deve seguir o padrão HMAC-SHA256, combinando dois elementos:
+
+**VALOR**: o email que será verificado
+
+**CHAVE**: sua API Key fornecida pela plataforma
+
+A fórmula de geração do hash é:
+
+hash = HMAC_SHA256(VALOR, CHAVE);
+
+Este hash deverá ser enviado no Header da requisição:
+
+Sf-Hmac: (Conteúdo do Hash)
+
+**Exemplo**
+
+**Sf-Hmac**: afc5382171c3745890b56********************4aa43506326b4e1fc993cb
+
 ### Sandbox
 
 A integração oferece um ambiente de Sandbox para que possam ser feitos testes sem consumir seus créditos de uma consulta real.
