@@ -1,7 +1,7 @@
 function SafetyApi($email) {
-$apiKey = '<APIKEY INFORMADA NO PAINEL SAFETYMAILS>';
-$tkOrigem = '<TK ORIGEM INFORMADA NO PAINEL SAFETYMAILS>';
-$timeout = 10; // Timeout da conexão com a Safetymails
+$apiKey = '<APIKEY INFORMED IN THE SAFETYMAILS PANEL>';
+$tkOrigem = '<TK_ORIGEM INFORMED IN THE SAFETYMAILS PANEL>';
+$timeout = 10; // Connection timeout with Safetymails
 $url = "https://{$tkOrigem}.safetymails.com/api/".sha1($tkOrigem);
 $header[] = "Sf-Hmac: " . hash_hmac('sha256', $email, $apiKey);
 $post['email'] = $email;
@@ -29,16 +29,16 @@ $httpCode = 408; // Timeout
 elseif ($httpCode == 200)
 $result = json_decode($ret, true);
 
-# HTTPCODE 400 - Parâmetros inválidos
-# HTTPCODE 401 - API Key inválida
-# HTTPCODE 402 - Créditos insuficientes para a consulta
-# HTTPCODE 403 - Acesso de uma origem diferente da cadastrada
-# HTTPCODE 406 - Ticket Origem inválido ou inativo
+# HTTPCODE 400 - Invalid parameters
+# HTTPCODE 401 - Invalid API Key
+# HTTPCODE 402 - Insufficient credits for the consultation
+# HTTPCODE 403 - Access from a source other than the one registered
+# HTTPCODE 406 - Invalid or inactive source ticket
 # HTTPCODE 408 - Timeout
-# HTTPCODE 429 - Limite de consultas por hora ou minuto ultrapassado
+# HTTPCODE 429 - Hourly or minute query limit exceeded
 
 return ['Status'=>$httpCode, 'Result'=>$result];
 }
 
-$emailTeste = "teste@email.com";
-print_r(SafetyApi($emailTeste));
+$emailTest = "test@email.com";
+print_r(SafetyApi($emailTest));
