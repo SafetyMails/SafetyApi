@@ -14,8 +14,8 @@ import (
 )
 
 const (
-    apiKey = "<APIKEY INFORMADA NO PAINEL SAFETYMAILS>"
-    tkOrigem = "<TK ORIGEM INFORMADA NO PAINEL SAFETYMAILS>"
+    apiKey = "<APIKEY INFORMED IN THE SAFETYMAILS PANEL>"
+    tkOrigem = "<SOURCE TICKET INFORMED IN THE SAFETYMAILS PANEL>"
     timeout = 10 * time.Second // Timeout da conexão
 )
 
