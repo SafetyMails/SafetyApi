@@ -104,3 +104,6 @@ Object {
 | 403 | Origem diferente da cadastrada (%s)<>(%s) | Você está tentando realizar consultas para uma origem API diferente da cadastrada em sua conta. Verifique a origem e tente novamente |
 | 406 | Limite de consultas por hora ou minuto ou diário ultrapassado – Contacte o Suporte | A Safetymails oferece uma proteção ao seu formulário de uso indevido, permitindo que você limite as consultas vindas de um mesmo IP, além disso todos os planos possuem limites de consultas por hora e minuto, protegendo de erros que possam gerar loop. Para realizar mais consultas do que o previsto, entre em contato com o suporte (support@safetymails.com) |
 | 429 | Sem créditos para realizar a pesquisa | Sua conta não possui créditos para realizar a consulta. É preciso adquirir créditos. |
+
+Se precisar de mais orientações para configurar sua API, fale com nosso time de suporte:
+📧 support@safetymails.com
