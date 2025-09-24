@@ -1,6 +1,6 @@
 function SafetyApi($email) {
 $apiKey = '<APIKEY INFORMED IN THE SAFETYMAILS PANEL>';
-$tkOrigem = '<TK_ORIGEM INFORMED IN THE SAFETYMAILS PANEL>';
+$tkOrigem = '<SOURCE TICKET INFORMED IN THE SAFETYMAILS PANEL>';
 $timeout = 10; // Connection timeout with Safetymails
 $url = "https://{$tkOrigem}.safetymails.com/api/".sha1($tkOrigem);
 $header[] = "Sf-Hmac: " . hash_hmac('sha256', $email, $apiKey);
