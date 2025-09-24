@@ -10,6 +10,8 @@ Crie uma nova **Origem** para que as suas chaves de acesso sejam geradas
 
 Assim que a origem for criada terá acesso a sua **API_KEY** e **TICKET_ORIGEM**
 
+Veja mais em [<<!nav>>nossa documentação<<!/nav>>](https://docs.safetymails.com/pt-br/article/como-customizar-a-api-real-time)
+
 ### Sintaxe da Consulta
 
 https://optin.safetymails.com/main/safetyOptin/<**API_KEY**>/<**TICKET_ORIGEM**>/<**EMAIL_CODIFICADO**>
