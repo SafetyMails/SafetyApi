@@ -1,5 +1,6 @@
-# SafetyAPI-Javascript
-API de integração via Javascript para seu formulário
+# SafetyAPI
+
+API de integração para validação de email em tempo Real
 
 ## Instalação
 
