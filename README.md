@@ -16,58 +16,57 @@ Veja mais em [nossa documentação](https://docs.safetymails.com/pt-br/article/c
 
 https://<**TICKET_ORIGEM**>.safetymails.com/api/<**CODE_TICKET**>
 
-Onde CODE_TICKET = SHA1(<TICKET_ORIGEM>.
+Onde CODE_TICKET = SHA1(<TICKET_ORIGEM>).
   
-> &lt;**EMAIL_CODIFICADO**>: O e-mail deve ser codificado utilizando o protocolo “base64”, caso contrário o sistema não receberá com perfeição os dados.
+Envie a requisição com o campo email no corpo do POST.
 
 ### Sandbox
 
 A integração oferece um ambiente de Sandbox para que possam ser feitos testes sem consumir seus créditos de uma consulta real.
 
-Para utilizar a Sandbox basta mudar o comando da Sintaxe da URL de consulta como no exemplo abaixo:
+Para utilizar a Sandbox basta ativar este recurso no cadastro de sua origem no painel da SafetyMails.
 
-http://optin.safetymails.com/main/sandbox/<**API_KEY**>/<**TICKET_ORIGEM**>/<**EMAIL_CODIFICADO**>
-
-O Sandbox apenas verifica se todos os retornos de status possíveis estão chegando corretamente em sua integração. Não são feitas validações reais.
+O Sandbox apenas verifica se todos os retornos de status possíveis estão chegando corretamente em sua integração. Não são feitas validações reais, não são consumidos créditos enquanto esta opção estiver ativa em sua origem.
 
 ## Retorno
 
 O retorno da consulta é no formato JSON, e informará caso a consulta retorne algum tipo de erro.
 
-**IP/Dia**: Informa o IP origem da consulta.
-
-**StatusCal**: Status da chamada: OK ou Failed.
-
-**StatusEmail**: Resultado da validação do e-mail, em caso de sucesso.
-
-**email**: E-mail consultado.
-
-**public**: Informa se o e-mail consultado é de domínio público ou privado.
-
-**referer**: Informa a origem da consulta em caso de chamada via javascript.
-
-**MsgErro**: Retorna a mensagem de erro referente a falha na chamada.
+| Campo | Descrição |
+| ----------- | ----------- |
+| Success | Retorno do tipo bool (true ou false). Indica se a requisição foi executada com sucesso. Se retornar false, significa que a consulta não foi realizada, podendo haver falhas como: chave de API incorreta, ticket inválido ou inativo, parâmetros malformados, limite de requisições excedido ou falta de créditos. |
+| DomainStatus | Status do domínio do e-mail consultado. |
+| Status | Resultado da validação do e-mail, em caso de sucesso. Os status podem ser: Válidos, Role-based, baixa entregabilidade, descartável, incertos, junk, inválidos, domínio inválido, erro de sintaxe e pendentes. |
+| Email | Email consultado. |
+| Limited | Informa se o e-mail consultado é de um provedor limitado, ou seja, que recebe um número limitado de solicitações. |
+| Public | Informa se o e-mail consultado é de domínio ‘Corporate’ (domínios privados e/ou que possuem regras privadas para recebimento) ou ‘Email provider’ (domínios que possuem regras públicas de recebimento). |
+| Advice | É uma classificação sugerida pela SafetyMails para o status do e-mail consultado (Valid, Invalid, Risky ou Unknown) para facilitar a análise. |
+| Balance | Quantidade de créditos para consulta disponíveis em sua conta. |
+| Msg | Retorna a mensagem de erro referente a falha na chamada (apenas quando a chamada apresenta erro). |
 
 **Retorno de Sucesso**
 ```javascript
 Object {
-	IP/Dia:"192.168.2.2"
-	StatusCal:"OK"
-	StatusEmail:"INVALIDO"
-	email:"teste-safetyoptin@safetymails.com"
-	public:false
-	referer:"https://www.safetymails.com"
+	"Success":true,
+	"Email":"testeemail@safetymails.com",
+	"Referer":"www.safetymails.com",
+	"DomainStatus":"VALIDO",
+	"Status":"VALIDO",
+	"Advice":"Valid",
+	"Public":null,
+	"Limited":null,
+	"Balance":4112343
 }
 ```
 **Retorno de Erro**
 ```javascript
 Object {
-	IP/Dia:"192.168.2.2"
-	StatusCal: "Failed",
-	MsgErro : "Mensagem de erro"
-	email:"teste-safetyoptin@safetymails.com"
-	public:false
-	referer:"https://www.safetymails.com"
+	"Success":false,
+	"Email":"testeemail@safetymails.com",
+	"Referer":"www.safetymails.com",
+	"Status":"PENDENTE",
+	"Advice":"Unknown",
+	"Msg":"Referer inválido"
 }
 ```
 
@@ -97,22 +96,11 @@ Object {
 
 ### Mensagens de Erro
 
-**Sintaxe incorreta! Entre em contato com o Suporte**
-Há um erro de sintaxe na url da chamada, verifique o tópico de sintaxe, aqui
-
-**Acesso ao safetyCheck de um IP Inválido [%s]<>[%s]**
-Um IP diferente do cadastrado para consultas pelo comando 'SafetyCheck'
-
-**Excedido o limite de consultas do IP %s (%s)<>(%s)**
-Para consultas com comando 'SafetyOptin' via JavaScript há um limite de tentativas/dia pelo mesmo IP de usuário, padrão: 20
-
-### HTTP Erros
-
-`HTTP CODE 422` Referer ou ApiKey Inválidos
-
-`HTTP CODE 423` Acesso ao SafetyOptin de um Referer Inativo %
-
-`HTTP CODE 424` Acesso por um SafetyOptin Inativo
-
-`HTTP CODE 427` Sem créditos para realizar a pesquisa
-
+| HTTP Code | Erro | Descrição |
+| ----------- | ----------- |
+| 400 | Parâmetros inválidos | Chaves de acesso incorretas ou não existentes. |
+| 401 | API Key inválida | Chaves de acesso incorretas ou não existentes. |
+| 402 | Ticket Origem inválido ou inativo | Você está tentando realizar consultas para uma origem API inativa. Vá ao seu painel e ative a origem corretamente. |
+| 403 | Origem diferente da cadastrada (%s)<>(%s) | Você está tentando realizar consultas para uma origem API diferente da cadastrada em sua conta. Verifique a origem e tente novamente |
+| 406 | Limite de consultas por hora ou minuto ou diário ultrapassado – Contacte o Suporte | A Safetymails oferece uma proteção ao seu formulário de uso indevido, permitindo que você limite as consultas vindas de um mesmo IP, além disso todos os planos possuem limites de consultas por hora e minuto, protegendo de erros que possam gerar loop. Para realizar mais consultas do que o previsto, entre em contato com o suporte (support@safetymails.com) |
+| 429 | Sem créditos para realizar a pesquisa | Sua conta não possui créditos para realizar a consulta. É preciso adquirir créditos. |
